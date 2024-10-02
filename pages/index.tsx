@@ -1,6 +1,7 @@
 import React from 'react';
 import NavBar from '../components/NavBar/NavBar';
 import ProductCard from '../components/ProductCard/ProductCard';
+import Footer from '@/components/Footer/Footer';
 
 const HomePage = () => {
   const products = [
@@ -60,6 +61,7 @@ const HomePage = () => {
           ))}
         </div>
       </div>
+      <Footer />
     </>
   );
 };
