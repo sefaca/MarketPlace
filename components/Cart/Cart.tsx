@@ -2,6 +2,7 @@
 import React from 'react';
 import { CartContainer, CartItem, TotalContainer } from './CartStyles'; // Importar los estilos
 import { useCart } from '@/context/CartContext';
+import Link from 'next/link';
 
 const Cart = () => {
   const { cart, removeFromCart, clearCart } = useCart();
@@ -30,13 +31,18 @@ const Cart = () => {
         ))
       )}
       {cart.length > 0 && (
-        <TotalContainer>
-          <p>Total: ${totalPrice}</p>
-          <button onClick={clearCart} className="btn btn-warning">
-            Vaciar Carrito
-          </button>
-        </TotalContainer>
-      )}
+  <>
+    <TotalContainer>
+      <p>Total: ${totalPrice}</p>
+      <button onClick={clearCart} className="btn btn-warning">
+        Vaciar Carrito
+      </button>
+    </TotalContainer>
+    <Link href="/checkout">
+      <button className="btn btn-success mt-3">Proceder al Pago</button>
+    </Link>
+  </>
+)}
     </CartContainer>
   );
 };
