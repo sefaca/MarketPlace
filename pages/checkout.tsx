@@ -1,9 +1,12 @@
-// pages/checkout.tsx
 import React, { useState } from 'react';
 import NavBar from '../components/NavBar/NavBar';
 import Footer from '../components/Footer/Footer';
 import { useCart } from '../context/CartContext';
 import { useOrder } from '@/context/OrderContext';
+import CheckoutButton from '@/components/Buttons/CheckoutButton';
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
@@ -20,11 +23,11 @@ const CheckoutPage = () => {
 
   const { addOrder } = useOrder();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
   
     const order = {
-      id: Date.now(), // Genera un ID único basado en el tiempo actual
+      id: Date.now(),
       date: new Date().toLocaleDateString(),
       items: cart.map(item => ({
         id: item.id,
@@ -32,17 +35,37 @@ const CheckoutPage = () => {
         quantity: item.quantity,
         price: item.price,
         total: item.price * item.quantity
-      }))
+      })),
     };
   
-    addOrder(order);
-    alert('Compra realizada con éxito');
+    try {
+      addOrder(order);
+  
+      const res = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ items: cart }), // Asegúrate de que estás enviando "items" en lugar de "cart"
+      });
+  
+      const { id: sessionId } = await res.json(); // Cambié "sessionId" a "id" para que coincida con el JSON que retorna el API
+  
+      const stripe = await stripePromise;
+      const { error } = await stripe?.redirectToCheckout({ sessionId });
+  
+      if (error) {
+        console.error('Stripe Checkout error:', error);
+      }
+    } catch (error) {
+      console.error('Error procesando el pedido:', error);
+    }
+  
     clearCart();
   };
+  
 
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
-
-  
 
   return (
     <>
@@ -96,7 +119,7 @@ const CheckoutPage = () => {
                   required
                 />
               </div>
-              <button type="submit" className="btn btn-primary">Realizar Pago</button>
+              <CheckoutButton/>
             </form>
           </div>
         )}
