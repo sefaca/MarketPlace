@@ -7,8 +7,11 @@ export const ProductListContainer = styled.div`
   gap: 20px;
   padding: 20px;
   justify-items: center;
+  margin-bottom: 20px;
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 `;
+
+
