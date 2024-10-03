@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import NavBar from '../components/NavBar/NavBar';
 import Footer from '../components/Footer/Footer';
 import { useCart } from '../context/CartContext';
+import { useOrder } from '@/context/OrderContext';
 
 const CheckoutPage = () => {
   const { cart, clearCart } = useCart();
@@ -17,13 +18,31 @@ const CheckoutPage = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
+  const { addOrder } = useOrder();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+  
+    const order = {
+      id: Date.now(), // Genera un ID único basado en el tiempo actual
+      date: new Date().toLocaleDateString(),
+      items: cart.map(item => ({
+        id: item.id,
+        title: item.title,
+        quantity: item.quantity,
+        price: item.price,
+        total: item.price * item.quantity
+      }))
+    };
+  
+    addOrder(order);
     alert('Compra realizada con éxito');
     clearCart();
   };
 
   const totalPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
+  
 
   return (
     <>

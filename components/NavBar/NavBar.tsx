@@ -18,6 +18,9 @@ const NavBar = () => {
             <li className="nav-item">
               <Link className="nav-link" href="/cart">Carrito</Link> {/* Enlace al carrito */}
             </li>
+            <li className="nav-item">
+              <Link href="/order-history" className="nav-link">Historial de Pedidos</Link>
+            </li>
           </ul>
         </div>
       </div>

@@ -2,13 +2,17 @@
 import { AppProps } from 'next/app';
 import { GlobalStyle } from '../styles/globalStyles';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { CartProvider } from '../context/CartContext';
+import { OrderProvider } from '@/context/OrderContext';
+import { CartProvider } from '@/context/CartContext';
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <CartProvider>
-      <GlobalStyle />
-      <Component {...pageProps} />
+      <OrderProvider>
+        <GlobalStyle />
+        <Component {...pageProps} />
+      </OrderProvider>
     </CartProvider>
   );
 }
