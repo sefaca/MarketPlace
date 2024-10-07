@@ -1,39 +1,60 @@
-// components/NavBar/NavBar.tsx
 import React from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
+import { Nav, NavbarBrand, NavbarToggler, NavbarText, NavLink, NavContainer } from './NavBar.styles'; // Importa los estilos
 
 const NavBar = () => {
-
-  const { user, logout } = useAuth();
+  const { currentUser, userData, logout } = useAuth(); // Obtén currentUser y userData
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container-fluid">
-        <Link className="navbar-brand" href="/">MarketPlace</Link>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <Nav className="navbar navbar-expand-lg">
+      <NavContainer>
+        <Link href="/" passHref>
+          <NavbarBrand>MarketPlace</NavbarBrand>
+        </Link>
+        <NavbarToggler
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon"></span>
-        </button>
+        </NavbarToggler>
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link" href="/">Inicio</Link>
+              <Link href="/" passHref>
+                <NavLink>Inicio</NavLink>
+              </Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link" href="/cart">Carrito</Link> {/* Enlace al carrito */}
+              <Link href="/cart" passHref>
+                <NavLink>Carrito</NavLink>
+              </Link>
             </li>
             <li className="nav-item">
-              <Link href="/order-history" className="nav-link">Historial de Pedidos</Link>
+              <Link href="/order-history" passHref>
+                <NavLink>Historial de Pedidos</NavLink>
+              </Link>
             </li>
-            {user ? (
-        <button onClick={logout}>Cerrar sesión</button>
-      ) : (
-        <Link href="/login">Iniciar sesión</Link>
-      )}
           </ul>
+          <NavbarText>
+            {currentUser ? (
+              <>
+                <span>Bienvenid@, {userData?.firstName}!</span>
+                <button onClick={logout} className="btn btn-outline-danger">Cerrar sesión</button>
+              </>
+            ) : (
+              <Link href="/login" passHref>
+                <button className="btn btn-outline-primary">Iniciar sesión</button>
+              </Link>
+            )}
+          </NavbarText>
         </div>
-      </div>
-    </nav>
+      </NavContainer>
+    </Nav>
   );
 };
 

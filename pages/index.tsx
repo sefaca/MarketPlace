@@ -1,28 +1,28 @@
-import React from 'react';
+// pages/index.tsx
+import React, { useState } from 'react';
 import NavBar from '../components/NavBar/NavBar';
-import ProductCard from '../components/ProductCard/ProductCard';
 import Footer from '../components/Footer/Footer';
-import { products } from '@/data/product';
+import ProductList from '@/components/ProdcutList/ProductList';
 
 const HomePage = () => {
+  const [searchText, setSearchText] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+
   return (
     <>
       <NavBar />
       <div className="container mt-4">
         <h1>Productos Digitales</h1>
-        <div className="row">
-          {products.map((product) => (
-            <div key={product.id} className="col-md-3">
-              <ProductCard
-                id={product.id}
-                image={product.image}
-                title={product.title}
-                description={product.description}
-                price={product.price}
-              />
-            </div>
-          ))}
-        </div>
+
+        <input
+          type="text"
+          placeholder="Buscar productos"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          className="form-control mb-4"
+        />
+
+        <ProductList searchText={searchText} selectedCategory={selectedCategory} />
       </div>
       <Footer />
     </>
