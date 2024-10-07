@@ -35,11 +35,10 @@ interface ProductListProps {
         {filteredProducts.map((product) => (
           <div key={product.id} className="col-md-3">
             <ProductCard
-              image={product.image}
-              title={product.title}
-              description={product.description}
-              price={product.price}
-            />
+                    image={product.image}
+                    title={product.title}
+                    description={product.description}
+                    price={product.price} id={0}            />
           </div>
         ))}
       </div>
