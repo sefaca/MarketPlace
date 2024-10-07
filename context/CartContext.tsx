@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+// context/CartContext.tsx
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 interface CartItem {
   id: number;
@@ -7,29 +8,39 @@ interface CartItem {
   quantity: number;
 }
 
-interface CartContextProps {
+interface CartContextType {
   cart: CartItem[];
   addToCart: (product: CartItem) => void;
   removeFromCart: (id: number) => void;
   clearCart: () => void;
 }
 
-// Definimos las props para el CartProvider, incluyendo children
-interface CartProviderProps {
-  children: ReactNode; // children ahora tiene el tipo adecuado
-}
+const CartContext = createContext<CartContextType | undefined>(undefined);
 
-const CartContext = createContext<CartContextProps | undefined>(undefined);
-
-export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cart, setCart] = useState<CartItem[]>([]);
+
+  // Recuperar el carrito de localStorage al cargar el componente
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
+
+  // Guardar el carrito en localStorage cada vez que cambia
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
 
   const addToCart = (product: CartItem) => {
     setCart((prevCart) => {
-      const existingProduct = prevCart.find((item) => item.id === product.id);
-      if (existingProduct) {
+      const existingItem = prevCart.find((item) => item.id === product.id);
+      if (existingItem) {
         return prevCart.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
         );
       }
       return [...prevCart, { ...product, quantity: 1 }];
@@ -40,7 +51,9 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
-  const clearCart = () => setCart([]);
+  const clearCart = () => {
+    setCart([]);
+  };
 
   return (
     <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
