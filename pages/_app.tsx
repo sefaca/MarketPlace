@@ -4,16 +4,19 @@ import { GlobalStyle } from '../styles/globalStyles';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { OrderProvider } from '@/context/OrderContext';
 import { CartProvider } from '@/context/CartContext';
+import { AuthProvider } from '@/context/AuthContext';
 
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <CartProvider>
-      <OrderProvider>
-        <GlobalStyle />
-        <Component {...pageProps} />
-      </OrderProvider>
-    </CartProvider>
+    <AuthProvider>
+      <CartProvider>
+        <OrderProvider>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </OrderProvider>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 

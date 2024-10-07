@@ -1,8 +1,12 @@
 // components/NavBar/NavBar.tsx
 import React from 'react';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 
 const NavBar = () => {
+
+  const { user, logout } = useAuth();
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -21,6 +25,11 @@ const NavBar = () => {
             <li className="nav-item">
               <Link href="/order-history" className="nav-link">Historial de Pedidos</Link>
             </li>
+            {user ? (
+        <button onClick={logout}>Cerrar sesión</button>
+      ) : (
+        <Link href="/login">Iniciar sesión</Link>
+      )}
           </ul>
         </div>
       </div>
