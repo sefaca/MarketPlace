@@ -1,7 +1,6 @@
 // components/ProductList/ProductList.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ProductCard from '../ProductCard/ProductCard';
-import { ProductListContainer } from './ProdrctList.styles';
 
 interface Product {
   id: number;
@@ -9,26 +8,42 @@ interface Product {
   description: string;
   price: number;
   image: string;
+  category: string;
 }
 
 interface ProductListProps {
-  products: Product[];
-}
+    products: Product[];
+    searchText: string;
+    selectedCategory: string;
+  }
 
-const ProductList: React.FC<ProductListProps> = ({ products }) => {
-  return (
-    <ProductListContainer>
-      {products.map((product) => (
-        <ProductCard
-          key={product.id}
-          title={product.title}
-          description={product.description}
-          price={product.price}
-          image={product.image}
-        />
-      ))}
-    </ProductListContainer>
-  );
-};
-
-export default ProductList;
+  const ProductList: React.FC<ProductListProps> = ({ products, searchText, selectedCategory }) => {
+    const [filteredProducts, setFilteredProducts] = useState<Product[]>(products);
+  
+    useEffect(() => {
+      const filtered = products.filter((product) => {
+        const matchesSearch = product.title.toLowerCase().includes(searchText.toLowerCase());
+        const matchesCategory = selectedCategory === '' || product.category === selectedCategory;
+        return matchesSearch && matchesCategory;
+      });
+  
+      setFilteredProducts(filtered);
+    }, [products, searchText, selectedCategory]);
+  
+    return (
+      <div className="row">
+        {filteredProducts.map((product) => (
+          <div key={product.id} className="col-md-3">
+            <ProductCard
+              image={product.image}
+              title={product.title}
+              description={product.description}
+              price={product.price}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  };
+  
+  export default ProductList;
