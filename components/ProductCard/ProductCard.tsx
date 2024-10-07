@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { Card, CardImage, CardBody, CardTitle, CardPrice, CardDescription } from './ProductCard.styles';
 
 interface ProductCardProps {
   image: string;
@@ -11,17 +12,17 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({ image, title, description, price, id }) => {
   return (
-    <div className="card">
-      <img src={image} className="card-img-top" alt={title} />
-      <div className="card-body">
-        <h5 className="card-title">{title}</h5>
-        <p className="card-text">{description}</p>
-        <p className="card-text">${price}</p>
+    <Card>
+      <CardImage src={image} alt={title} />
+      <CardBody>
+        <CardTitle>{title}</CardTitle>
+        <CardDescription>{description}</CardDescription>
+        <CardPrice>{price} €</CardPrice>
         <Link href={`/product/${id}`} legacyBehavior>
           <button className="btn btn-primary">Ver detalles</button>
         </Link>
-      </div>
-    </div>
+      </CardBody>
+    </Card>
   );
 };
 

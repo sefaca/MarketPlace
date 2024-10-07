@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import { useOrder } from '@/context/OrderContext';
 import CheckoutButton from '@/components/Buttons/CheckoutButton';
 import { loadStripe } from '@stripe/stripe-js';
+import { InputFormControl } from './checkout.styles';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -88,35 +89,38 @@ const CheckoutPage = () => {
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label">Nombre</label>
-                <input
+                <InputFormControl
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   className="form-control"
                   required
+                  placeholder='"Ej. Sergio"'
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Dirección</label>
-                <input
+                <InputFormControl
                   type="text"
                   name="address"
                   value={formData.address}
                   onChange={handleInputChange}
                   className="form-control"
                   required
+                  placeholder='"Ej. Ronda de Triana"'
                 />
               </div>
               <div className="mb-3">
                 <label className="form-label">Email</label>
-                <input
+                <InputFormControl
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
                   className="form-control"
                   required
+                  placeholder='"Ej. aaa@gmail.com"'
                 />
               </div>
               <CheckoutButton/>

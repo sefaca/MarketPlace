@@ -2,6 +2,9 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
+import { BoxRegister, FormBox, FormContainer, SubmitButton } from './login.styles';
+import NavBar from '../components/NavBar/NavBar';
+import Footer from '../components/Footer/Footer';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -24,8 +27,11 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h1>Iniciar sesión</h1>
+    <>
+    <NavBar />
+    <FormContainer>
+    <FormBox>
+      <h2>Iniciar sesión</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label className="form-label">Email</label>
@@ -47,13 +53,16 @@ const LoginPage = () => {
             required
           />
         </div>
-        <button type="submit" className="btn btn-primary">Iniciar sesión</button>
+        <SubmitButton type="submit" className="btn btn-primary">Iniciar sesión</SubmitButton>
       </form>
       
-      <div className="mt-3">
+      <BoxRegister>
         <p>¿No tienes cuenta? <button className="btn btn-secondary" onClick={handleRegisterRedirect}>Regístrate aquí</button></p>
-      </div>
-    </div>
+      </BoxRegister>
+      </FormBox>
+      </FormContainer>
+      <Footer />
+      </>
   );
 };
 

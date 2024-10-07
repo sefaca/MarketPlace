@@ -8,9 +8,9 @@ export const FooterContainer = styled.footer`
   padding: 20px;
   text-align: center;
   border-top: 1px solid #6c757d;
-  position: fixed;
-  bottom: 0;
   width: 100%;
+  position: relative;
+  margin-top: 140px;
 `;
 
 // Texto principal del footer (copyright)
@@ -22,6 +22,13 @@ export const FooterText = styled.p`
 // Estilo para los enlaces dentro del footer
 export const FooterLinks = styled.div`
   margin-top: 10px;
+
+
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+  }
 
   a {
     color: white;
